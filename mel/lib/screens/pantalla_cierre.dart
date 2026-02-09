@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:mel/models/ventas.dart';
-import '../services/storage_service.dart'; // Importante para borrar la sesión
+import '../services/storage_service.dart';
 import 'pantalla_bienvenida.dart';
 
 class PantallaCierre extends StatelessWidget {
   final double totalEfectivo;
   final double totalTransf;
   final double fondoInicial;
-  final double fondoInicialMP; // Agregado para el resumen completo
+  final double fondoInicialMP;
 
   const PantallaCierre({
     super.key,
     required this.totalEfectivo,
     required this.totalTransf,
     required this.fondoInicial,
-    required this.fondoInicialMP, // Agregado
+    required this.fondoInicialMP,
   });
 
   @override
@@ -74,8 +74,8 @@ class PantallaCierre extends StatelessWidget {
                 minimumSize: const Size(double.infinity, 60),
               ),
               onPressed: () async {
-                // Se vuelve async para esperar al Storage
-                // 1. LIMPIAR LA SESIÓN EN EL ALMACENAMIENTO (Esto resuelve tu problema)
+                //
+                // 1. LIMPIAR LA SESIÓN EN EL ALMACENAMIENTO
                 await StorageService.borrarSesion();
 
                 // 2. Limpiar lista temporal

@@ -8,12 +8,14 @@ class PantallaPrincipal extends StatefulWidget {
   final String nombre;
   final double fondoInicial;
   final double fondoInicialMP;
+  final DateTime fechaApertura;
 
   const PantallaPrincipal({
     super.key,
     required this.nombre,
     required this.fondoInicial,
     required this.fondoInicialMP,
+    required this.fechaApertura,
   });
 
   @override
@@ -22,11 +24,16 @@ class PantallaPrincipal extends StatefulWidget {
 
 class _PantallaPrincipalState extends State<PantallaPrincipal> {
   double get totalEfectivoVentas => historialVentas
-      .where((v) => v.tipo == 'Efectivo')
+      .where(
+        (v) => v.tipo == 'Efectivo' && v.fecha.isAfter(widget.fechaApertura),
+      )
       .fold(0, (prev, v) => prev + v.monto);
 
   double get totalTransferencia => historialVentas
-      .where((v) => v.tipo == 'Transferencia')
+      .where(
+        (v) =>
+            v.tipo == 'Transferencia' && v.fecha.isAfter(widget.fechaApertura),
+      )
       .fold(0, (prev, v) => prev + v.monto);
 
   @override
@@ -110,7 +117,6 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                 ),
               ),
               onPressed: () {
-                // CORRECCIÓN AQUÍ: Ahora pasamos los 4 parámetros que PantallaCierre necesita
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -118,8 +124,7 @@ class _PantallaPrincipalState extends State<PantallaPrincipal> {
                       totalEfectivo: totalEfectivoVentas,
                       totalTransf: totalTransferencia,
                       fondoInicial: widget.fondoInicial,
-                      fondoInicialMP:
-                          widget.fondoInicialMP, // <--- ESTO FALTABA
+                      fondoInicialMP: widget.fondoInicialMP,
                     ),
                   ),
                 );

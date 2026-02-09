@@ -73,7 +73,6 @@ class _PantallaBienvenidaState extends State<PantallaBienvenida> {
         : _buildFormularioInicio();
   }
 
-  // Se agrega SingleChildScrollView para evitar error de espacio al mostrar el teclado o en pantallas chicas
   Widget _buildVistaSesionActiva() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(30),
@@ -115,6 +114,9 @@ class _PantallaBienvenidaState extends State<PantallaBienvenida> {
                     nombre: _datosSesion!['nombre'],
                     fondoInicial: _datosSesion!['fondo'],
                     fondoInicialMP: _datosSesion!['fondoMP'],
+                    fechaApertura:
+                        _datosSesion!['fechaApertura'] ??
+                        DateTime.now(), // Enviamos la fecha guardada
                   ),
                 ),
               );
@@ -137,7 +139,6 @@ class _PantallaBienvenidaState extends State<PantallaBienvenida> {
     );
   }
 
-  // Formulario con Scroll para que no tape los campos el teclado
   Widget _buildFormularioInicio() {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(25),
@@ -185,7 +186,11 @@ class _PantallaBienvenidaState extends State<PantallaBienvenida> {
               double fondo = double.tryParse(_controllerFondo.text) ?? 0.0;
               double fondoMP = double.tryParse(_controllerFondoMP.text) ?? 0.0;
 
-              await StorageService.guardarSesion(nombre, fondo, fondoMP);
+              // CAPTURAMOS LA FECHA DE ESTE MOMENTO
+              DateTime ahora = DateTime.now();
+
+              // GUARDAMOS CON LA FECHA DE APERTURA
+              await StorageService.guardarSesion(nombre, fondo, fondoMP, ahora);
 
               if (context.mounted) {
                 await Navigator.push(
@@ -195,6 +200,7 @@ class _PantallaBienvenidaState extends State<PantallaBienvenida> {
                       nombre: nombre,
                       fondoInicial: fondo,
                       fondoInicialMP: fondoMP,
+                      fechaApertura: ahora,
                     ),
                   ),
                 );
@@ -214,7 +220,7 @@ class _PantallaBienvenidaState extends State<PantallaBienvenida> {
     );
   }
 
-  // --- EL RESTO DEL CÓDIGO (Historial y Borrado) SE MANTIENE IGUAL ---
+  // --- HISTORIAL Y BORRADO  ---
   Widget _buildVistaHistorialAgrupado() {
     if (_todoElHistorial.isEmpty) {
       return const Center(child: Text('Aún no tienes ventas registradas.'));

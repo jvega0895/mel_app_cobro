@@ -209,14 +209,11 @@ class _PantallaMontoState extends State<PantallaMonto> {
 
   void _finalizarVenta() async {
     historialVentas.add(Venta(_totalVenta, widget.tipo, DateTime.now()));
-    await StorageService.guardarVentas(
-      historialVentas,
-    ); // <--- Guarda permanentemente
+    await StorageService.guardarVentas(historialVentas);
     Navigator.pop(context);
   }
 }
 
-// Clase auxiliar interna para manejar los datos de la fila
 class ArticuloVenta {
   double precio = 0;
   int cantidad = 1;

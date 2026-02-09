@@ -6,7 +6,7 @@ import 'services/storage_service.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Cargamos las ventas guardadas antes de arrancar la app
+
   historialVentas = await StorageService.cargarVentas();
   runApp(const AppFeria());
 }
@@ -25,9 +25,7 @@ class AppFeria extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: const [
-        Locale('es', 'AR'), // Español de Argentina (o solo 'es')
-      ],
+      supportedLocales: const [Locale('es', 'AR')],
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.green),
         useMaterial3: true,

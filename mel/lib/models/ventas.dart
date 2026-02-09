@@ -20,5 +20,4 @@ class Venta {
   );
 }
 
-// Esta es tu lista global (la que ya tenías)
 List<Venta> historialVentas = [];
